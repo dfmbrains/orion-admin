@@ -24,6 +24,7 @@ import sessionRoutes from "app/views/sessions/SessionRoutes";
 import todoRoutes from "app/views/todo/TodoRoutes";
 import MatxLayout from "./components/MatxLayout/MatxLayout";
 import teamRoutes from "./views/team/teamRoutes";
+import blogRoutes from "./views/blog/blogRoutes";
 
 const routes = [
    {
@@ -35,6 +36,7 @@ const routes = [
       children: [
          //my routes
          ...teamRoutes,
+         ...blogRoutes,
          //default routes
          ...dashboardRoutes,
          ...calendarRoutes,

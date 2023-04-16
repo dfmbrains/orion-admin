@@ -16,7 +16,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Paragraph } from "app/components/Typography";
-import React, { useState } from "react";
+import React from "react";
 import { countries } from "../ecommerce/Country";
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -28,8 +28,6 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const InputField = styled(TextField)(() => ({ marginBottom: "16px" }));
 
 const PropertyListingForm = () => {
-  const [date, setDate] = useState(new Date());
-
   return (
     <StyledCard>
       <Box mx="auto" maxWidth={600}>
@@ -114,7 +112,7 @@ const PropertyListingForm = () => {
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             value={new Date()}
-            onChange={(date) => setDate(date)}
+            onChange={(date) => console.log(date)}
             renderInput={(props) => (
               <InputField
                 {...props}

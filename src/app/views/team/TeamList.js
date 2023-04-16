@@ -2,7 +2,7 @@ import {Avatar, Button, Card, Grid} from "@mui/material";
 import {Box} from "@mui/system";
 import {Breadcrumb, MatxLoading} from "app/components";
 import {FlexBetween, FlexBox} from "app/components/FlexBox";
-import {H1, H5} from "app/components/Typography";
+import {H5} from "app/components/Typography";
 import React, {useEffect, useState} from "react";
 import {Container, StyledButton, StyledP} from "./styles";
 import {getAllTeamMembers} from "../../firebase/teamFirebase";

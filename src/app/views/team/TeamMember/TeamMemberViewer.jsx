@@ -33,7 +33,7 @@ const TeamMemberViewer = () => {
                  .then(file => ({...data, photo: file[0]}))
           })
           .then(createdData => setTeamMemberData(createdData))
-   }, [])
+   }, [id])
 
    return (
        teamMemberData

@@ -1,5 +1,5 @@
 import {LoadingButton} from "@mui/lab";
-import {Box, Button, Card, Checkbox, Grid, styled, TextField, useTheme} from "@mui/material";
+import {Box, Card, Checkbox, Grid, styled, TextField, useTheme} from "@mui/material";
 import {MatxDivider} from "app/components";
 import {FlexAlignCenter, FlexBox} from "app/components/FlexBox";
 import {Paragraph} from "app/components/Typography";
@@ -46,7 +46,7 @@ const FirebaseRegister = () => {
    const navigate = useNavigate();
    const {enqueueSnackbar} = useSnackbar();
    const [loading, setLoading] = useState(false);
-   const {createUserWithEmail, signInWithGoogle} = useAuth();
+   const {createUserWithEmail} = useAuth();
 
    const handleFormSubmit = async (values) => {
       try {

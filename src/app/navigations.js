@@ -9,7 +9,7 @@ export const navigations = [
    },
    {
       name: 'Публикации',
-      path: '/posts',
+      path: '/blog',
       icon: 'dynamic_feed',
       auth: authRoles.sa, // ONLY SUPER ADMIN(SA) CAN ACCESS
    },
