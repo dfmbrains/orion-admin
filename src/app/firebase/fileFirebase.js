@@ -41,7 +41,6 @@ export const uploadFileToFirebase = async (fileData, path) => {
 }
 
 export const deleteFileFromFirebase = (path) => {
-   const storage = getStorage();
    const fileRef = ref(storage, path);
 
    deleteObject(fileRef)

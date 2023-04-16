@@ -6,4 +6,6 @@ export const containedLayoutWidth = 1200;
 
 export const genders = ['Мужской', 'Женский']
 
+//firebase paths
 export const teamFirebasePath = 'team'
+export const blogFirebasePath = 'blog'

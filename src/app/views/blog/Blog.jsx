@@ -1,14 +1,10 @@
 import {styled} from "@mui/material";
-import {MatxSidenavContainer, MatxSidenavContent} from "app/components";
-import {
-   getBrandList,
-   getCategoryList,
-   getProductList,
-   getRatingList,
-} from "app/redux/actions/EcommerceActions";
+import {MatxLoading, MatxSidenavContainer, MatxSidenavContent} from "app/components";
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import BlogContainer from "./BlogContainer";
+import {getAllCollection} from "../../firebase/firestoreFirebase";
+import {blogFirebasePath} from "../../utils/constant";
+import {getFileFromFirebase} from "../../firebase/fileFirebase";
 
 const ShopRoot = styled("div")(({theme}) => ({
    margin: "30px",
@@ -16,41 +12,30 @@ const ShopRoot = styled("div")(({theme}) => ({
 }));
 
 const Shop = () => {
-   const [page, setPage] = useState(0);
-   const [rowsPerPage, setRowsPerPage] = useState(6);
-   const [filteredProductList, setFilteredProductList] = useState([]);
-
-   const dispatch = useDispatch();
-   const {productList = []} = useSelector((state) => state.ecommerce);
-
-   const handleChangePage = (_, newPage) => setPage(newPage);
+   const [blogList, setBlogList] = useState(null)
 
    useEffect(() => {
-      dispatch(getProductList());
-      dispatch(getCategoryList());
-      dispatch(getRatingList());
-      dispatch(getBrandList());
-   }, [dispatch]);
-
-   useEffect(() => {
-      setFilteredProductList(productList);
-   }, [productList]);
+      getAllCollection(blogFirebasePath)
+          .then(data => {
+             const createdData = data.map(post => {
+                return getFileFromFirebase(`${blogFirebasePath}/${post.id}`)
+                    .then(images => ({...post, images}))
+             })
+             return Promise.all(createdData)
+          })
+          .then(createdData => setBlogList(createdData))
+   }, []);
 
    return (
-       <ShopRoot className="shop">
-          <MatxSidenavContainer>
-
-             <MatxSidenavContent>
-                <BlogContainer
-                    page={page}
-                    rowsPerPage={rowsPerPage}
-                    productList={filteredProductList}
-                    handleChangePage={handleChangePage}
-                    setRowsPerPage={(e) => setRowsPerPage(e.target.value)}
-                />
-             </MatxSidenavContent>
-          </MatxSidenavContainer>
-       </ShopRoot>
+       blogList
+           ? <ShopRoot className="shop">
+              <MatxSidenavContainer>
+                 <MatxSidenavContent>
+                    <BlogContainer blogList={blogList} setBlogList={setBlogList}/>
+                 </MatxSidenavContent>
+              </MatxSidenavContainer>
+           </ShopRoot>
+           : <MatxLoading/>
    );
 };
 

@@ -35,7 +35,7 @@ const TeamMemberActions = ({teamMemberData}) => {
       deleteFileFromFirebase(`${teamFirebasePath}/${id}/${teamMemberData.photo.name}`)
       navigate('/team')
    }
-   console.log(shouldOpenConfirmationDialog)
+
    return (
        <Card elevation={3} sx={{marginTop: "16px"}}>
           <H5 sx={{p: 2}}>Действия</H5>
@@ -56,7 +56,7 @@ const TeamMemberActions = ({teamMemberData}) => {
               <ConfirmationDialog
                   text="Вы уверены что хотите удалить?"
                   open={shouldOpenConfirmationDialog}
-                  onConfirmDialogClose={() => null}
+                  onConfirmDialogClose={() => setShouldOpenConfirmationDialog(false)}
                   onYesClick={deleteTeamMember}
               />
           )}
