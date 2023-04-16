@@ -3,8 +3,8 @@ import {getFirestore, doc, getDoc, getDocs, collection, query, setDoc, updateDoc
 
 const db = getFirestore(firebaseApp);
 
-export const getAllTeamMembers = async () => {
-   const q = query(collection(db, "team"));
+export const getAllCollection = async (path) => {
+   const q = query(collection(db, path));
 
    const querySnapshot = await getDocs(q);
    const data = []
@@ -15,8 +15,8 @@ export const getAllTeamMembers = async () => {
    return data
 }
 
-export const getTeamMemberById = async (id) => {
-   const docRef = doc(db, "team", id);
+export const getCollectionDocumentById = async (path, id) => {
+   const docRef = doc(db, path, id);
    const docSnap = await getDoc(docRef);
 
    if (docSnap.exists()) {
@@ -24,18 +24,18 @@ export const getTeamMemberById = async (id) => {
    }
 }
 
-export const createTeamMember = async (data) => {
-   return await setDoc(doc(db, "team", data.id), data);
+export const createCollectionDocument = async (path, data) => {
+   return await setDoc(doc(db, path, data.id), data);
 }
 
-export const updateTeamMemberById = async (data, id) => {
-   const ref = doc(db, "team", id);
+export const updateCollectionDocumentById = async (path, data, id) => {
+   const ref = doc(db, path, id);
 
    return await updateDoc(ref, data);
 }
 
-export const deleteTeamMemberById = async (id) => {
-   const ref = doc(db, "team", id);
+export const deleteCollectionDocumentById = async (path, id) => {
+   const ref = doc(db, path, id);
 
    return await deleteDoc(ref);
 }

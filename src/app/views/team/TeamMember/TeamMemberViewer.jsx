@@ -3,9 +3,10 @@ import {styled} from "@mui/system";
 import {Breadcrumb, MatxLoading} from "app/components";
 import React, {useEffect, useState} from "react";
 import TeamMemberDetails from "./TeamMemberDetails";
-import {getTeamMemberById} from "../../../firebase/teamFirebase";
+import {getCollectionDocumentById} from "../../../firebase/firestoreFirebase";
 import {useParams} from "react-router-dom";
 import {getFileFromFirebase} from "../../../firebase/fileFirebase";
+import {teamFirebasePath} from "../../../utils/constant";
 
 const Container = styled("div")(({theme}) => ({
    margin: "30px",
@@ -27,9 +28,9 @@ const TeamMemberViewer = () => {
    };
 
    useEffect(() => {
-      getTeamMemberById(id)
+      getCollectionDocumentById(teamFirebasePath, id)
           .then(data => {
-             return getFileFromFirebase(`team/${id}`)
+             return getFileFromFirebase(`${teamFirebasePath}/${id}`)
                  .then(file => ({...data, photo: file[0]}))
           })
           .then(createdData => setTeamMemberData(createdData))

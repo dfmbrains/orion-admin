@@ -4,10 +4,11 @@ import {FlexBox} from "app/components/FlexBox";
 import {H5} from "app/components/Typography";
 import React, {useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {deleteTeamMemberById} from "../../../firebase/teamFirebase";
+import {deleteCollectionDocumentById} from "../../../firebase/firestoreFirebase";
 import {LoadingButton} from "@mui/lab";
 import ConfirmationDialog from "../../../components/ConfirmationDialog";
 import {deleteFileFromFirebase} from "../../../firebase/fileFirebase";
+import {teamFirebasePath} from "../../../utils/constant";
 
 const ContentBox = styled(FlexBox)(() => ({
    marginBottom: "16px",
@@ -15,7 +16,7 @@ const ContentBox = styled(FlexBox)(() => ({
    columnGap: "16px"
 }));
 
-const StyledButton = styled(LoadingButton)(({theme}) => ({
+const StyledButton = styled(LoadingButton)(() => ({
    fontSize: "13px",
    marginBottom: "16px"
 }));
@@ -30,8 +31,8 @@ const TeamMemberActions = ({teamMemberData}) => {
    const deleteTeamMember = async () => {
       setLoading(true)
       setShouldOpenConfirmationDialog(false)
-      await deleteTeamMemberById(id)
-      deleteFileFromFirebase(`team/${id}/${teamMemberData.photo.name}`)
+      await deleteCollectionDocumentById(teamFirebasePath, id)
+      deleteFileFromFirebase(`${teamFirebasePath}/${id}/${teamMemberData.photo.name}`)
       navigate('/team')
    }
    console.log(shouldOpenConfirmationDialog)

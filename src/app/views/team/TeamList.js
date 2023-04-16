@@ -5,20 +5,21 @@ import {FlexBetween, FlexBox} from "app/components/FlexBox";
 import {H5} from "app/components/Typography";
 import React, {useEffect, useState} from "react";
 import {Container, StyledButton, StyledP} from "./styles";
-import {getAllTeamMembers} from "../../firebase/teamFirebase";
+import {getAllCollection} from "../../firebase/firestoreFirebase";
 import {formatName} from "../../utils/utils";
 import {getFileFromFirebase} from "../../firebase/fileFirebase";
 import {useNavigate} from "react-router-dom";
+import {teamFirebasePath} from "../../utils/constant";
 
 const TeamList = () => {
    const [isAlive, setIsAlive] = useState(true);
    const [userList, setUserList] = useState(null);
 
    useEffect(() => {
-      getAllTeamMembers()
+      getAllCollection(teamFirebasePath)
           .then(data => {
              const createdData = data.map(member => {
-                return getFileFromFirebase(`team/${member.id}`)
+                return getFileFromFirebase(`${teamFirebasePath}/${member.id}`)
                     .then(file => ({...member, photo: file[0]}))
              })
              return Promise.all(createdData)

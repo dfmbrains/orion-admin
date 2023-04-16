@@ -11,10 +11,13 @@ import * as yup from "yup";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import {ru} from "date-fns/esm/locale";
-import {genders} from "../../../utils/constant";
+import {genders, teamFirebasePath} from "../../../utils/constant";
 import {DatePicker, LoadingButton} from "@mui/lab";
 import {v4 as uuidv4} from 'uuid';
-import {createTeamMember, getTeamMemberById, updateTeamMemberById} from "../../../firebase/teamFirebase";
+import {
+   createCollectionDocument,
+   getCollectionDocumentById, updateCollectionDocumentById,
+} from "../../../firebase/firestoreFirebase";
 import {deleteFileFromFirebase, getFileFromFirebase, uploadFileToFirebase} from "../../../firebase/fileFirebase";
 import {useNavigate, useParams} from "react-router-dom";
 
@@ -94,19 +97,19 @@ const TeamForm = () => {
       }
 
       if (!isImgPrev && teamMemberId) {
-         deleteFileFromFirebase(`team/${teamMemberId}/${prevImgName}`)
+         deleteFileFromFirebase(`${teamFirebasePath}/${teamMemberId}/${prevImgName}`)
       }
 
       Promise.all([
          isImgPrev
              ? () => null
-             : uploadFileToFirebase(imageList[0], `team/${id}/${uuidv4()}`),
+             : uploadFileToFirebase(imageList[0], `${teamFirebasePath}/${id}/${uuidv4()}`),
          teamMemberId
-             ? updateTeamMemberById(createdData, teamMemberId)
-             : createTeamMember(createdData)
+             ? updateCollectionDocumentById(teamFirebasePath, createdData, teamMemberId)
+             : createCollectionDocument(teamFirebasePath, createdData)
       ])
-          .then(r => navigate('/team'))
-          .catch(e => setLoading(false))
+          .then(() => navigate('/team'))
+          .catch(() => setLoading(false))
    };
 
    useEffect(() => {
@@ -117,13 +120,13 @@ const TeamForm = () => {
    }, [acceptedFiles]);
    useEffect(() => {
       if (teamMemberId) {
-         getFileFromFirebase(`team/${teamMemberId}`)
+         getFileFromFirebase(`${teamFirebasePath}/${teamMemberId}`)
              .then(fileResponse => {
                 setImageList(fileResponse)
                 setIsImgPrev(true)
                 setPrevImgName(fileResponse[0].name)
              })
-         getTeamMemberById(teamMemberId)
+         getCollectionDocumentById(teamFirebasePath, teamMemberId)
              .then(data => {
                 setInitialValues({
                    firstName: data.firstName,
@@ -144,8 +147,6 @@ const TeamForm = () => {
 
    const {palette} = useTheme();
    const textMuted = palette.text.secondary;
-
-   console.log(prevImgName)
 
    return (
        <Container>

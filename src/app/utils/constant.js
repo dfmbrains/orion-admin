@@ -5,3 +5,5 @@ export const sidenavCompactWidth = 80;
 export const containedLayoutWidth = 1200;
 
 export const genders = ['Мужской', 'Женский']
+
+export const teamFirebasePath = 'team'
