@@ -143,12 +143,15 @@ const BlogForm = () => {
    return (
        <Container>
           <div className="breadcrumb">
-             <Breadcrumb routeSegments={[{name: "Pages", path: "/pages"}, {name: "New Product"}]}/>
+             <Breadcrumb routeSegments={[{
+                name: "Список публикаций",
+                path: "/blog"
+             }, {name: postId ? "Редактирование" : 'Создание'}]}/>
           </div>
 
           <Card elevation={3}>
              <Box p={2} display="flex">
-                <H4>Создать публикацию</H4>
+                <H4>{postId ? 'Редактировать' : 'Создать'} публикацию</H4>
              </Box>
              <Divider sx={{mb: 3}}/>
 
