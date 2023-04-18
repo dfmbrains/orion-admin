@@ -21,7 +21,7 @@ const BlogContainer = ({blogList, setBlogList}) => {
       setConfirmationDialogId('')
       setBlogList((prevState) => prevState.filter(post => post.id !== confirmationDialogId))
    }
-   console.log(confirmationDialogId)
+
    return (
        <Fragment>
           <Box width="100%" height="100%" position="relative">

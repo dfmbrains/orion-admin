@@ -165,7 +165,7 @@ export const themeColors = {
          error: errorColor,
          background: {paper: "#fff", default: "#fafafa"},
          primary: {main: "#F18200", contrastText: "#ffffff"},
-         secondary: {main: "#1976d2", contrastText: textLight.primary},
+         secondary: {main: "#1976d2", contrastText: '#FFF'},
       },
    },
 

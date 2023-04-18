@@ -83,7 +83,7 @@ const TeamForm = () => {
       position: '',
    })
 
-   const handleSubmit = async (values) => {
+   const handleSubmit = (values) => {
       setLoading(true)
 
       const id = teamMemberId ? teamMemberId : uuidv4()
@@ -151,12 +151,15 @@ const TeamForm = () => {
    return (
        <Container>
           <div className="breadcrumb">
-             <Breadcrumb routeSegments={[{name: "Список сотрудников", path: "/team"}, {name: "Редактирование"}]}/>
+             <Breadcrumb routeSegments={[{
+                name: "Список сотрудников",
+                path: "/team"
+             }, {name: teamMemberId ? "Редактирование" : "Создание"}]}/>
           </div>
 
           <Card elevation={3}>
              <Box p={2} display="flex">
-                <H4>Редактировать сотрудника</H4>
+                <H4>{teamMemberId ? 'Редактировать' : 'Создать'} сотрудника</H4>
              </Box>
              <Divider sx={{mb: 3}}/>
 
@@ -256,9 +259,9 @@ const TeamForm = () => {
                                 <FlexBox alignItems="center" flexDirection="column">
                                    <Icon sx={{color: textMuted, fontSize: "48px"}}>publish</Icon>
                                    {imageList.length ? (
-                                       <span>{imageList.length} images were selected</span>
+                                       <span>{imageList.length} фотографий выбрано</span>
                                    ) : (
-                                       <span>Drop product images</span>
+                                       <span>Нажмите, чтобы загрузить</span>
                                    )}
                                 </FlexBox>
                              </DropZone>
