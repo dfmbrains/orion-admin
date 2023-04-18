@@ -83,33 +83,37 @@ const TeamForm = () => {
       position: '',
    })
 
-   const handleSubmit = (values) => {
+   const handleSubmit = async (values) => {
       setLoading(true)
 
-      const id = teamMemberId ? teamMemberId : uuidv4()
-      const createdData = {
-         ...values,
-         contacts: {address: values.address, phoneNumber: values.phoneNumber, email: values.email},
-         birthDate: new Date(birthDate),
-         workPeriod: {from: new Date(fromDate), to: null},
-         status: true,
-         id
-      }
+      try {
+         const createdData = {
+            ...values,
+            contacts: {address: values.address, phoneNumber: values.phoneNumber, email: values.email},
+            birthDate: new Date(birthDate),
+            workPeriod: {from: new Date(fromDate), to: null},
+            status: true,
+         }
 
-      if (!isImgPrev && teamMemberId) {
-         deleteFileFromFirebase(`${teamFirebasePath}/${teamMemberId}/${prevImgName}`)
-      }
+         if (teamMemberId) {
+            createdData.id = teamMemberId
 
-      Promise.all([
-         isImgPrev
-             ? () => null
-             : uploadFileToFirebase(imageList[0], `${teamFirebasePath}/${id}/${uuidv4()}`),
-         teamMemberId
-             ? updateCollectionDocumentById(teamFirebasePath, createdData, teamMemberId)
-             : createCollectionDocument(teamFirebasePath, createdData)
-      ])
-          .then(() => navigate('/team'))
-          .catch(() => setLoading(false))
+            if (!isImgPrev) {
+               deleteFileFromFirebase(`${teamFirebasePath}/${teamMemberId}/${prevImgName}`)
+               await uploadFileToFirebase(imageList[0], `${teamFirebasePath}/${teamMemberId}/${uuidv4()}`)
+            }
+            await updateCollectionDocumentById(teamFirebasePath, createdData, teamMemberId)
+         } else {
+            createdData.id = uuidv4()
+
+            await uploadFileToFirebase(imageList[0], `${teamFirebasePath}/${createdData.id}/${uuidv4()}`)
+            await createCollectionDocument(teamFirebasePath, createdData)
+         }
+         navigate('/team')
+      } catch (error) {
+         console.log(error)
+         setLoading(false)
+      }
    };
 
    useEffect(() => {
