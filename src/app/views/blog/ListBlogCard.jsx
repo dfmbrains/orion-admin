@@ -1,6 +1,6 @@
 import {Button, Card, Grid, styled, useTheme} from "@mui/material";
 import {FlexAlignCenter, FlexGap10} from "app/components/FlexBox";
-import {H3, H5, Paragraph} from "app/components/Typography";
+import {H3, H5} from "app/components/Typography";
 import React from "react";
 import {formatFirebaseTimestamp} from "../../utils/utils";
 import {useNavigate} from "react-router-dom";
@@ -41,9 +41,9 @@ const ListBlogCard = ({post, loading, confirmationDialogId, setConfirmationDialo
 
                 <H5 mb={2} sx={{color: theme.palette.text.secondary}}>{formatFirebaseTimestamp(post.created)}</H5>
 
-                <Paragraph sx={{mb: 2, color: theme.palette.text.secondary}}>
-                   {post.subtitle.substring(0, 200)}
-                </Paragraph>
+                {/*<Paragraph sx={{mb: 2, color: theme.palette.text.secondary}}>*/}
+                {/*   {post.subtitle.substring(0, 200)}*/}
+                {/*</Paragraph>*/}
 
 
                 <StyledButtonGroup>
