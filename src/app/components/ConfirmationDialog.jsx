@@ -1,6 +1,6 @@
-import {Button, Dialog} from "@mui/material";
+import {Button, Dialog, TextField} from "@mui/material";
 import {styled} from "@mui/system";
-import React from "react";
+import React, {useState} from "react";
 
 const DialogBox = styled("div")(() => ({
    width: 360,
@@ -53,18 +53,42 @@ const ConfirmationDialog = ({
                                onYesClick,
                                onConfirmDialogClose,
                                title = "Подтверждение",
+                               password
                             }) => {
+   const [writtenPass, setWrittenPass] = useState('')
+
    return (
        <Dialog maxWidth="xs" open={open} onClose={onConfirmDialogClose}>
           <DialogBox>
              <Title>{title}</Title>
              <p>{text}</p>
-             <Controller>
-                <StyledButton className="yesBtn" variant="outlined" color="error"
-                              onClick={onYesClick}>Да</StyledButton>
-                <StyledButton className="noBtn" variant="outlined" color="secondary"
-                              onClick={onConfirmDialogClose}>Нет</StyledButton>
-             </Controller>
+
+             {password
+                 ? <>
+                    <TextField
+                        sx={{my: 2}}
+                        fullWidth
+                        size={"small"}
+                        name="pass"
+                        label="Пароль"
+                        variant="outlined"
+                        onChange={(e) => setWrittenPass(e.target.value)}
+                        value={writtenPass}
+                    />
+                    {password === writtenPass
+                        ? <Button className="yesBtn" variant="outlined" color="error" fullWidth
+                                  onClick={onYesClick}>Подтвердить</Button>
+                        : <Button className="yesBtn" variant="outlined" color="error" disabled={true} fullWidth>Неправильный
+                           пароль</Button>
+                    }
+                 </>
+                 : <Controller>
+                    <StyledButton className="yesBtn" variant="outlined" color="error"
+                                  onClick={onYesClick}>Да</StyledButton>
+                    <StyledButton className="noBtn" variant="outlined" color="secondary"
+                                  onClick={onConfirmDialogClose}>Нет</StyledButton>
+                 </Controller>
+             }
           </DialogBox>
        </Dialog>
    );

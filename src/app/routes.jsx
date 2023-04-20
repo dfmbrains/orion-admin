@@ -1,3 +1,4 @@
+import {lazy} from "react";
 import AuthGuard from "app/auth/AuthGuard";
 import Redirect from "app/auth/Redirect";
 import Account from "app/views/account";
@@ -25,6 +26,9 @@ import todoRoutes from "app/views/todo/TodoRoutes";
 import MatxLayout from "./components/MatxLayout/MatxLayout";
 import teamRoutes from "./views/team/teamRoutes";
 import blogRoutes from "./views/blog/blogRoutes";
+import Loadable from "./components/Loadable";
+
+const Company = Loadable(lazy(() => import('./views/company')));
 
 const routes = [
    {
@@ -58,6 +62,7 @@ const routes = [
          ...scrumBoardRoutes,
          ...todoRoutes,
          {path: "/page-layouts/account", element: <Account/>},
+         {path: "/company", element: <Company/>},
       ],
    },
    ...sessionRoutes,

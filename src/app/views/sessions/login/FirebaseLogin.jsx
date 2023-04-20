@@ -10,6 +10,8 @@ import {useSnackbar} from "notistack";
 import React, {useState} from "react";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
+import {getAllConstants} from "../../../redux/actions/FirebaseContantsActions";
+import {useDispatch} from "react-redux";
 
 const Logo = styled(Box)(() => ({
    gap: 10,
@@ -74,13 +76,16 @@ const FirebaseLogin = () => {
    const {state} = useLocation();
    const [loading, setLoading] = useState(false);
    const {enqueueSnackbar} = useSnackbar();
+   const dispatch = useDispatch()
 
    const {signInWithEmail} = useAuth();
 
    const handleFormSubmit = async (values) => {
       setLoading(true);
+
       try {
          await signInWithEmail(values.email, values.password);
+         dispatch(getAllConstants())
          navigate(state ? state.from : "/");
          enqueueSnackbar("Logged In Successfully", {variant: "success"});
       } catch (error) {

@@ -9,3 +9,5 @@ export const genders = ['Мужской', 'Женский']
 //firebase paths
 export const teamFirebasePath = 'team'
 export const blogFirebasePath = 'blog'
+export const companyFirebasePath = 'company'
+export const constantsFirebasePath = 'constants'
