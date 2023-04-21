@@ -25,11 +25,9 @@ const MatxMenu = ({ horizontalPosition = "left", children, menuButton }) => {
         anchorOrigin={{ vertical: "bottom", horizontal: horizontalPosition }}
         transformOrigin={{ vertical: "top", horizontal: horizontalPosition }}
       >
-        {children.map((child, index) => (
-          <Box onClick={handleClose} key={index}>
-            {child}
-          </Box>
-        ))}
+         <Box onClick={handleClose}>
+            {children}
+         </Box>
       </Menu>
     </Fragment>
   );

@@ -1,14 +1,12 @@
 import {LoadingButton} from "@mui/lab";
 import {Box, Card, Grid, styled, TextField, useTheme} from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
 import {MatxDivider, MatxLogo} from "app/components";
-import {FlexAlignCenter, FlexBox} from "app/components/FlexBox";
-import {Paragraph, Span} from "app/components/Typography";
+import {FlexAlignCenter} from "app/components/FlexBox";
 import useAuth from "app/hooks/useAuth";
 import {Formik} from "formik";
 import {useSnackbar} from "notistack";
 import React, {useState} from "react";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import * as Yup from "yup";
 import {getAllConstants} from "../../../redux/actions/FirebaseContantsActions";
 import {useDispatch} from "react-redux";
@@ -57,21 +55,21 @@ const FirebaseRoot = styled(FlexAlignCenter)(({theme}) => ({
 
 // inital login credentials
 const initialValues = {
-   email: "max@gmail.com",
-   password: "max12345",
-   remember: true,
+   email: "",
+   password: ""
 };
 
 // form field validation schema
 const validationSchema = Yup.object().shape({
    password: Yup.string()
-       .min(6, "Password must be 6 character length")
-       .required("Password is required!"),
-   email: Yup.string().email("Invalid Email address").required("Email is required!"),
+       .min(6, "Пароль должен состоять не менее чем из 6 символов.")
+       .required("Введите пароль!"),
+   email: Yup.string()
+       .email("Неправильная электронная почта.")
+       .required("Введите электронную почту!"),
 });
 
 const FirebaseLogin = () => {
-   const theme = useTheme();
    const navigate = useNavigate();
    const {state} = useLocation();
    const [loading, setLoading] = useState(false);
@@ -87,7 +85,7 @@ const FirebaseLogin = () => {
          await signInWithEmail(values.email, values.password);
          dispatch(getAllConstants())
          navigate(state ? state.from : "/");
-         enqueueSnackbar("Logged In Successfully", {variant: "success"});
+         enqueueSnackbar("Успешный вход", {variant: "success"});
       } catch (error) {
          enqueueSnackbar(error.message, {variant: "error"});
          setLoading(false);
@@ -104,15 +102,13 @@ const FirebaseLogin = () => {
                          <MatxLogo/> <span>Orion Trans</span>
                       </Logo>
 
-                      <h1 className="authTitle">Admin Dashboard</h1>
-
-                      <Span sx={{flexGrow: 1}}></Span>
+                      <h1 className="authTitle">Администратор</h1>
                    </div>
                 </Grid>
 
                 <Grid item sm={6} xs={12}>
                    <Box px={4} mt={2}>
-                      <h1 className="authTitle">Sign In</h1>
+                      <h1 className="authTitle">Вход</h1>
                    </Box>
 
                    <MatxDivider sx={{px: 1}}/>
@@ -130,7 +126,7 @@ const FirebaseLogin = () => {
                                     size="small"
                                     type="email"
                                     name="email"
-                                    label="Email"
+                                    label="Электронная почта"
                                     variant="outlined"
                                     onBlur={handleBlur}
                                     value={values.email}
@@ -145,7 +141,7 @@ const FirebaseLogin = () => {
                                     size="small"
                                     name="password"
                                     type="password"
-                                    label="Password"
+                                    label="Пароль"
                                     variant="outlined"
                                     onBlur={handleBlur}
                                     value={values.password}
@@ -155,46 +151,47 @@ const FirebaseLogin = () => {
                                     sx={{mb: 1.5}}
                                 />
 
-                                <FlexBox justifyContent="space-between">
-                                   <FlexBox alignItems="center" gap={1}>
-                                      <Checkbox
-                                          size="small"
-                                          name="remember"
-                                          onChange={handleChange}
-                                          checked={values.remember}
-                                          sx={{padding: 0}}
-                                      />
+                                {/*<FlexBox justifyContent="space-between">*/}
+                                {/*   <FlexBox alignItems="center" gap={1}>*/}
+                                {/*      <Checkbox*/}
+                                {/*          size="small"*/}
+                                {/*          name="remember"*/}
+                                {/*          onChange={handleChange}*/}
+                                {/*          checked={values.remember}*/}
+                                {/*          sx={{padding: 0}}*/}
+                                {/*      />*/}
 
-                                      <Paragraph>Remember Me</Paragraph>
-                                   </FlexBox>
+                                {/*      <Paragraph>Remember Me</Paragraph>*/}
+                                {/*   </FlexBox>*/}
 
-                                   <NavLink
-                                       to="/session/forgot-password"
-                                       style={{color: theme.palette.primary.main}}
-                                   >
-                                      Forgot password?
-                                   </NavLink>
-                                </FlexBox>
+                                {/*   <NavLink*/}
+                                {/*       to="/session/forgot-password"*/}
+                                {/*       style={{color: theme.palette.primary.main}}*/}
+                                {/*   >*/}
+                                {/*      Forgot password?*/}
+                                {/*   </NavLink>*/}
+                                {/*</FlexBox>*/}
 
                                 <LoadingButton
+                                    fullWidth
                                     type="submit"
                                     color="primary"
                                     loading={loading}
                                     variant="contained"
                                     sx={{my: 2}}
                                 >
-                                   Login
+                                   Войти
                                 </LoadingButton>
 
-                                <Paragraph>
-                                   Don't have an account?
-                                   <NavLink
-                                       to="/session/signup"
-                                       style={{color: theme.palette.primary.main, marginLeft: 5}}
-                                   >
-                                      Register
-                                   </NavLink>
-                                </Paragraph>
+                                {/*<Paragraph>*/}
+                                {/*   Don't have an account?*/}
+                                {/*   <NavLink*/}
+                                {/*       to="/session/signup"*/}
+                                {/*       style={{color: theme.palette.primary.main, marginLeft: 5}}*/}
+                                {/*   >*/}
+                                {/*      Register*/}
+                                {/*   </NavLink>*/}
+                                {/*</Paragraph>*/}
                              </form>
                          )}
                       </Formik>
