@@ -14,7 +14,7 @@ import {
    getCollectionDocumentById,
    updateCollectionDocumentById
 } from "../../firebase/firestoreFirebase";
-import {blogFirebasePath} from "../../utils/constant";
+import {serviceFirebasePath} from "../../utils/constant";
 import {LoadingButton} from "@mui/lab";
 import {useNavigate, useParams} from "react-router-dom";
 import {deleteFileFromFirebase, getFileFromFirebase, uploadFileToFirebase} from "../../firebase/fileFirebase";
@@ -51,7 +51,7 @@ const DropZone = styled(FlexAlignCenter)(({isDragActive, theme, borderColor}) =>
    background: isDragActive ? "rgb(0, 0, 0, 0.15)" : "rgb(0, 0, 0, 0.01)",
 }));
 
-const BlogForm = () => {
+const ServiceForm = () => {
    const {id: postId} = useParams()
 
    const navigate = useNavigate()
@@ -89,28 +89,28 @@ const BlogForm = () => {
 
          const uploadFileList = async (id) => {
             for (let i = 0; i < imageList.length; i++) {
-               await uploadFileToFirebase(imageList[i], `${blogFirebasePath}/${id}/${uuidv4()}`)
+               await uploadFileToFirebase(imageList[i], `${serviceFirebasePath}/${id}/${uuidv4()}`)
             }
          }
 
          try {
             if (postId) {
-               const createdData = {...values, content, id: postId, created: new Date()}
+               const createdData = {...values, content, postId, created: new Date()}
                if (!isImgsPrev) {
                   for (let i = 0; i < prevImgList.length; i++) {
-                     deleteFileFromFirebase(`${blogFirebasePath}/${postId}/${prevImgList[i].name}`)
+                     deleteFileFromFirebase(`${serviceFirebasePath}/${postId}/${prevImgList[i].name}`)
                   }
                   await uploadFileList(postId)
                }
-               await updateCollectionDocumentById(blogFirebasePath, createdData, postId)
+               await updateCollectionDocumentById(serviceFirebasePath, createdData, postId)
             } else {
                const id = uuidv4()
 
                await uploadFileList(id)
-               await createCollectionDocument(blogFirebasePath, {...values, content, id, created: new Date()})
+               await createCollectionDocument(serviceFirebasePath, {...values, content, id, created: new Date()})
             }
 
-            navigate('/blog')
+            navigate('/services')
          } catch (error) {
             console.log(error)
             setLoading(false)
@@ -127,12 +127,12 @@ const BlogForm = () => {
 
    useEffect(() => {
       if (postId) {
-         getFileFromFirebase(`${blogFirebasePath}/${postId}`)
+         getFileFromFirebase(`${serviceFirebasePath}/${postId}`)
              .then(fileResponse => {
                 setPrevImgList(fileResponse)
                 setImageList(fileResponse)
              })
-         getCollectionDocumentById(blogFirebasePath, postId)
+         getCollectionDocumentById(serviceFirebasePath, postId)
              .then(data => {
                 setInitialValues({title: data.title, subtitle: data.subtitle})
                 setContent(data.content)
@@ -144,14 +144,14 @@ const BlogForm = () => {
        <Container>
           <div className="breadcrumb">
              <Breadcrumb routeSegments={[{
-                name: "Список публикаций",
-                path: "/blog"
+                name: "Список услуг",
+                path: "/services"
              }, {name: postId ? "Редактирование" : 'Создание'}]}/>
           </div>
 
           <Card elevation={3}>
              <Box p={2} display="flex">
-                <H4>{postId ? 'Редактировать' : 'Создать'} публикацию</H4>
+                <H4>{postId ? 'Редактировать' : 'Создать'} услугу</H4>
              </Box>
              <Divider sx={{mb: 3}}/>
 
@@ -269,4 +269,4 @@ const productSchema = yup.object().shape({
    subtitle: yup.string()
        .required("Введите подзаголовок"),
 });
-export default BlogForm;
+export default ServiceForm;

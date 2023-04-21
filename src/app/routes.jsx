@@ -27,6 +27,7 @@ import MatxLayout from "./components/MatxLayout/MatxLayout";
 import teamRoutes from "./views/team/teamRoutes";
 import blogRoutes from "./views/blog/blogRoutes";
 import Loadable from "./components/Loadable";
+import servicesRoutes from "./views/services/servicesRoutes";
 
 const Company = Loadable(lazy(() => import('./views/company')));
 
@@ -41,6 +42,8 @@ const routes = [
          //my routes
          ...teamRoutes,
          ...blogRoutes,
+         ...servicesRoutes,
+         {path: "/company", element: <Company/>},
          //default routes
          ...dashboardRoutes,
          ...calendarRoutes,
@@ -62,7 +65,6 @@ const routes = [
          ...scrumBoardRoutes,
          ...todoRoutes,
          {path: "/page-layouts/account", element: <Account/>},
-         {path: "/company", element: <Company/>},
       ],
    },
    ...sessionRoutes,

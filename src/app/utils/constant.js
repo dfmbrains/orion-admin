@@ -10,4 +10,5 @@ export const genders = ['Мужской', 'Женский']
 export const teamFirebasePath = 'team'
 export const blogFirebasePath = 'blog'
 export const companyFirebasePath = 'company'
+export const serviceFirebasePath = 'service'
 export const constantsFirebasePath = 'constants'

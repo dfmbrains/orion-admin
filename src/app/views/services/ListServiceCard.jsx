@@ -22,7 +22,7 @@ const StyledButtonGroup = styled(FlexGap10)(() => ({
    position: "absolute",
 }));
 
-const ListBlogCard = ({post, loading, confirmationDialogId, setConfirmationDialogId}) => {
+const ListServiceCard = ({service, loading, confirmationDialogId, setConfirmationDialogId}) => {
    const theme = useTheme();
 
    const navigate = useNavigate()
@@ -32,25 +32,25 @@ const ListBlogCard = ({post, loading, confirmationDialogId, setConfirmationDialo
           <Grid container spacing={2}>
              <Grid item lg={6} md={6} sm={6} xs={12}>
                 <FlexAlignCenter position="relative">
-                   <IMG src={post.images[0].file} alt={post.title}/>
+                   <IMG src={service.images[0].file} alt={service.title}/>
                 </FlexAlignCenter>
              </Grid>
 
              <Grid item sm={6} xs={12} sx={{p: "12px", position: "relative"}}>
-                <H3>{post.title}</H3>
+                <H3>{service.title}</H3>
 
-                <H5 mb={2} sx={{color: theme.palette.text.secondary}}>{formatFirebaseTimestamp(post.created)}</H5>
+                <H5 mb={2} sx={{color: theme.palette.text.secondary}}>{formatFirebaseTimestamp(service.created)}</H5>
 
                 {/*<Paragraph sx={{mb: 2, color: theme.palette.text.secondary}}>*/}
-                {/*   {post.subtitle.substring(0, 200)}*/}
+                {/*   {service.subtitle.substring(0, 200)}*/}
                 {/*</Paragraph>*/}
 
 
                 <StyledButtonGroup>
-                   <Button onClick={() => navigate(`edit/${post.id}`)} variant={"outlined"} color={"success"}
+                   <Button onClick={() => navigate(`edit/${service.id}`)} variant={"outlined"} color={"success"}
                            size={"small"}>Редактировать</Button>
-                   <LoadingButton onClick={() => setConfirmationDialogId(post.id)}
-                                  loading={loading && confirmationDialogId === post.id} variant={"contained"}
+                   <LoadingButton onClick={() => setConfirmationDialogId(service.id)}
+                                  loading={loading && confirmationDialogId === service.id} variant={"contained"}
                                   color={"error"} size={"small"}>Удалить</LoadingButton>
                 </StyledButtonGroup>
              </Grid>
@@ -59,4 +59,4 @@ const ListBlogCard = ({post, loading, confirmationDialogId, setConfirmationDialo
    );
 };
 
-export default ListBlogCard;
+export default ListServiceCard;
