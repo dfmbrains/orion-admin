@@ -20,6 +20,12 @@ export const navigations = [
       auth: authRoles.sa, // ONLY SUPER ADMIN(SA) CAN ACCESS
    },
    {
+      name: 'Партнеры',
+      path: '/partners',
+      icon: 'handshake',
+      auth: authRoles.sa, // ONLY SUPER ADMIN(SA) CAN ACCESS
+   },
+   {
       name: 'Публикации',
       path: '/blog',
       icon: 'dynamic_feed',

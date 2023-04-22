@@ -1,4 +1,4 @@
-import {Button, ButtonGroup, Card, Divider, Grid, Icon, TextField} from "@mui/material";
+import {Card, Divider, Grid, Icon, TextField} from "@mui/material";
 import {Box, styled, useTheme} from "@mui/system";
 import {Breadcrumb} from "app/components";
 import {FlexAlignCenter, FlexBox} from "app/components/FlexBox";
@@ -14,7 +14,7 @@ import {
    getCollectionDocumentById,
    updateCollectionDocumentById
 } from "../../firebase/firestoreFirebase";
-import {blogFirebasePath} from "../../utils/constant";
+import {partnersFirebasePath} from "../../utils/constant";
 import {LoadingButton} from "@mui/lab";
 import {useNavigate, useParams} from "react-router-dom";
 import {deleteFileFromFirebase, getFileFromFirebase, uploadFileToFirebase} from "../../firebase/fileFirebase";
@@ -51,8 +51,8 @@ const DropZone = styled(FlexAlignCenter)(({isDragActive, theme, borderColor}) =>
    background: isDragActive ? "rgb(0, 0, 0, 0.15)" : "rgb(0, 0, 0, 0.01)",
 }));
 
-const BlogForm = () => {
-   const {id: postId} = useParams()
+const PartnersForm = () => {
+   const {id: partnerId} = useParams()
 
    const navigate = useNavigate()
    const {palette} = useTheme();
@@ -68,18 +68,9 @@ const BlogForm = () => {
    const {getRootProps, getInputProps, acceptedFiles} = useDropzone({accept: "image/*"})
 
    const [initialValues, setInitialValues] = useState({
-      title: "",
-      subtitle: ""
+      name: "",
+      email: ""
    });
-   const [content, setContent] = useState([{title: '', text: ''}])
-
-   const handleContentChange = (index, key, value) => {
-      setContent((prevState) => {
-         const newState = [...prevState];
-         newState[index] = {...newState[index], [key]: value};
-         return newState;
-      })
-   }
 
    const handleSubmit = async (values) => {
       if (imageList.length === 0) {
@@ -89,28 +80,28 @@ const BlogForm = () => {
 
          const uploadFileList = async (id) => {
             for (let i = 0; i < imageList.length; i++) {
-               await uploadFileToFirebase(imageList[i], `${blogFirebasePath}/${id}/${uuidv4()}`)
+               await uploadFileToFirebase(imageList[i], `${partnersFirebasePath}/${id}/${uuidv4()}`)
             }
          }
 
          try {
-            if (postId) {
-               const createdData = {...values, id: postId, content, created: new Date()}
+            if (partnerId) {
+               const createdData = {...values, id: partnerId, created: new Date()}
                if (!isImgsPrev) {
                   for (let i = 0; i < prevImgList.length; i++) {
-                     deleteFileFromFirebase(`${blogFirebasePath}/${postId}/${prevImgList[i].name}`)
+                     deleteFileFromFirebase(`${partnersFirebasePath}/${partnerId}/${prevImgList[i].name}`)
                   }
-                  await uploadFileList(postId)
+                  await uploadFileList(partnerId)
                }
-               await updateCollectionDocumentById(blogFirebasePath, createdData, postId)
+               await updateCollectionDocumentById(partnersFirebasePath, createdData, partnerId)
             } else {
                const id = uuidv4()
 
                await uploadFileList(id)
-               await createCollectionDocument(blogFirebasePath, {...values, content, id, created: new Date()})
+               await createCollectionDocument(partnersFirebasePath, {...values, id, created: new Date()})
             }
 
-            navigate('/blog')
+            navigate('/partners')
          } catch (error) {
             console.log(error)
             setLoading(false)
@@ -126,34 +117,31 @@ const BlogForm = () => {
    }, [acceptedFiles]);
 
    useEffect(() => {
-      if (postId) {
+      if (partnerId) {
          setLoading(true)
-         getFileFromFirebase(`${blogFirebasePath}/${postId}`)
+         getFileFromFirebase(`${partnersFirebasePath}/${partnerId}`)
              .then(fileResponse => {
                 setPrevImgList(fileResponse)
                 setImageList(fileResponse)
                 setLoading(false)
              })
-         getCollectionDocumentById(blogFirebasePath, postId)
-             .then(data => {
-                setInitialValues({title: data.title, subtitle: data.subtitle})
-                setContent(data.content)
-             })
+         getCollectionDocumentById(partnersFirebasePath, partnerId)
+             .then(data => setInitialValues({name: data.name, email: data.email}))
       }
-   }, [postId])
+   }, [partnerId])
 
    return (
        <Container>
           <div className="breadcrumb">
              <Breadcrumb routeSegments={[{
-                name: "Список публикаций",
-                path: "/blog"
-             }, {name: postId ? "Редактирование" : 'Создание'}]}/>
+                name: "Список партнеров",
+                path: "/services"
+             }, {name: partnerId ? "Редактирование" : 'Создание'}]}/>
           </div>
 
           <Card elevation={3}>
              <Box p={2} display="flex">
-                <H4>{postId ? 'Редактировать' : 'Создать'} публикацию</H4>
+                <H4>{partnerId ? 'Редактировать' : 'Создать'} партнера</H4>
              </Box>
              <Divider sx={{mb: 3}}/>
 
@@ -176,28 +164,28 @@ const BlogForm = () => {
                           <Grid item sm={6} xs={12}>
                              <StyledTextField
                                  fullWidth
-                                 name="title"
-                                 label="Заголовок"
+                                 name="name"
+                                 label="Название"
                                  size="small"
                                  variant="outlined"
                                  onBlur={handleBlur}
                                  onChange={handleChange}
-                                 value={values.title || ""}
-                                 error={Boolean(touched.title && errors.title)}
-                                 helperText={touched.title && errors.title}
+                                 value={values.name || ""}
+                                 error={Boolean(touched.name && errors.name)}
+                                 helperText={touched.name && errors.name}
                              />
                              <StyledTextField
                                  fullWidth
                                  multiline
                                  size="small"
-                                 name="subtitle"
+                                 name="email"
                                  variant="outlined"
-                                 label="Подзаголовок"
+                                 label="Электронная почта"
                                  onBlur={handleBlur}
                                  onChange={handleChange}
-                                 value={values.subtitle || ""}
-                                 error={Boolean(touched.subtitle && errors.subtitle)}
-                                 helperText={touched.subtitle && errors.subtitle}
+                                 value={values.email || ""}
+                                 error={Boolean(touched.email && errors.email)}
+                                 helperText={touched.email && errors.email}
                              />
 
                              <DropZone borderColor={imageListError ? textError : palette.text.primary}
@@ -215,43 +203,6 @@ const BlogForm = () => {
                                    )}
                                 </FlexBox>
                              </DropZone>
-
-                             {content.map((el, ind) => (
-                                 <React.Fragment key={ind}>
-                                    <H4 mt={2} mb={1} px={1}>Абзац {ind + 1}</H4>
-
-                                    <StyledTextField
-                                        fullWidth
-                                        size="small"
-                                        variant="outlined"
-                                        label="Заголовок абзаца"
-                                        value={el.title}
-                                        onChange={(e) => handleContentChange(ind, 'title', e.target.value)}
-                                    />
-
-                                    <StyledTextField
-                                        fullWidth
-                                        multiline
-                                        minRows={5}
-                                        size="small"
-                                        variant="outlined"
-                                        label="Текст абзаца"
-                                        value={el.text}
-                                        onChange={(e) => handleContentChange(ind, 'text', e.target.value)}
-                                    />
-                                 </React.Fragment>
-                             ))}
-
-                             <ButtonGroup fullWidth>
-                                <Button disabled={content.length === 10}
-                                        onClick={() => setContent((prevState) => [...prevState, {title: '', text: ''}])}
-                                        mt={1} fullWidth type={"button"} color="secondary" variant="contained">Создать
-                                   абзац</Button>
-                                <Button disabled={content.length === 1}
-                                        onClick={() => setContent((prevState) => prevState.slice(0, prevState.length - 1))}
-                                        mt={1} fullWidth type={"button"} color="error" variant="contained">Удалить
-                                   абзац</Button>
-                             </ButtonGroup>
                           </Grid>
                        </Grid>
 
@@ -266,9 +217,10 @@ const BlogForm = () => {
 };
 
 const productSchema = yup.object().shape({
-   title: yup.string()
+   name: yup.string()
        .required("Введите заголовок"),
-   subtitle: yup.string()
-       .required("Введите подзаголовок"),
+   email: yup.string()
+       .email("Неправильная электронная почта.")
+       .required("Введите электронную почту"),
 });
-export default BlogForm;
+export default PartnersForm;

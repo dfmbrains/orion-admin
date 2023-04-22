@@ -124,10 +124,12 @@ const TeamForm = () => {
    }, [acceptedFiles]);
    useEffect(() => {
       if (teamMemberId) {
+         setLoading(true)
          getFileFromFirebase(`${teamFirebasePath}/${teamMemberId}`)
              .then(fileResponse => {
                 setImageList(fileResponse)
                 setIsImgPrev(true)
+                setLoading(false)
                 setPrevImgName(fileResponse[0].name)
              })
          getCollectionDocumentById(teamFirebasePath, teamMemberId)

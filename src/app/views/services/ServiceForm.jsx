@@ -95,7 +95,7 @@ const ServiceForm = () => {
 
          try {
             if (postId) {
-               const createdData = {...values, content, postId, created: new Date()}
+               const createdData = {...values, id: postId, content, created: new Date()}
                if (!isImgsPrev) {
                   for (let i = 0; i < prevImgList.length; i++) {
                      deleteFileFromFirebase(`${serviceFirebasePath}/${postId}/${prevImgList[i].name}`)
@@ -127,10 +127,12 @@ const ServiceForm = () => {
 
    useEffect(() => {
       if (postId) {
+         setLoading(true)
          getFileFromFirebase(`${serviceFirebasePath}/${postId}`)
              .then(fileResponse => {
                 setPrevImgList(fileResponse)
                 setImageList(fileResponse)
+                setLoading(false)
              })
          getCollectionDocumentById(serviceFirebasePath, postId)
              .then(data => {

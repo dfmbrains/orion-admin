@@ -20,6 +20,7 @@ const ServiceContainer = ({serviceList, setServiceList}) => {
       }
       setConfirmationDialogId('')
       setServiceList((prevState) => prevState.filter(post => post.id !== confirmationDialogId))
+      setLoading(false)
    }
 
    return (
