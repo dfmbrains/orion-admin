@@ -88,9 +88,7 @@ const ServiceForm = () => {
          setLoading(true)
 
          const uploadFileList = async (id) => {
-            for (let i = 0; i < imageList.length; i++) {
-               await uploadFileToFirebase(imageList[i], `${serviceFirebasePath}/${id}/${uuidv4()}`)
-            }
+            await uploadFileToFirebase(imageList[0], `${serviceFirebasePath}/${id}/${uuidv4()}`)
          }
 
          try {
