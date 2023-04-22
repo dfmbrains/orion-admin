@@ -52,16 +52,17 @@ const ImageWrapper = styled(Box)(({theme}) => ({
 const BasicInformation = ({companyData, setCompanyData}) => {
    const {constants} = useSelector((state) => state.constants);
 
-   const {name, email, phoneNumber, address} = companyData.about
-   const initialValues = {name, email, phoneNumber, address};
+   const {email, phoneNumber1, phoneNumber2, address} = companyData.about
+   const initialValues = {email, phoneNumber1, phoneNumber2, address};
 
    const validationSchema = Yup.object({
-      name: Yup.string()
-          .required("Обязательно введите название"),
       email: Yup.string()
           .email("Invalid email address")
           .required("Обязательно введите email"),
-      phoneNumber: Yup.string()
+      phoneNumber1: Yup.string()
+          .min(9)
+          .required("Обязательно введите номер телефона"),
+      phoneNumber2: Yup.string()
           .min(9)
           .required("Обязательно введите номер телефона"),
       address: Yup.string()
@@ -110,14 +111,12 @@ const BasicInformation = ({companyData, setCompanyData}) => {
              <ContentWrapper>
                 <FlexBox justifyContent="center">
                    <ImageWrapper>
-                      <img src={LogoImg} alt={name} sizes="large"/>
+                      <img src={LogoImg} alt="Orion-Trans" sizes="large"/>
                    </ImageWrapper>
                 </FlexBox>
 
                 <Box mt={2}>
-                   <H4 fontWeight={600} textAlign="center">
-                      {name}
-                   </H4>
+                   <H4 fontWeight={600} textAlign="center">Orion-Trans</H4>
 
                    <FlexBetween maxWidth={400} flexWrap="wrap" margin="auto" mt={1}>
                       <FlexBox alignItems="center" gap={1}>
@@ -148,20 +147,6 @@ const BasicInformation = ({companyData, setCompanyData}) => {
                       <Grid item sm={6} xs={12}>
                          <TextField
                              fullWidth
-                             name="name"
-                             label="Название"
-                             variant="outlined"
-                             onBlur={handleBlur}
-                             onChange={handleChange}
-                             value={values.name}
-                             helperText={touched.name && errors.name}
-                             error={Boolean(touched.name && errors.name)}
-                         />
-                      </Grid>
-
-                      <Grid item sm={6} xs={12}>
-                         <TextField
-                             fullWidth
                              name="email"
                              label="Admin Email"
                              variant="outlined"
@@ -176,20 +161,6 @@ const BasicInformation = ({companyData, setCompanyData}) => {
                       <Grid item sm={6} xs={12}>
                          <TextField
                              fullWidth
-                             name="phoneNumber"
-                             label="Номер телефона"
-                             variant="outlined"
-                             onBlur={handleBlur}
-                             onChange={handleChange}
-                             value={values.phoneNumber}
-                             helperText={touched.phoneNumber && errors.phoneNumber}
-                             error={Boolean(touched.phoneNumber && errors.phoneNumber)}
-                         />
-                      </Grid>
-
-                      <Grid item sm={6} xs={12}>
-                         <TextField
-                             fullWidth
                              name="address"
                              label="Адрес"
                              variant="outlined"
@@ -198,6 +169,34 @@ const BasicInformation = ({companyData, setCompanyData}) => {
                              value={values.address}
                              helperText={touched.address && errors.address}
                              error={Boolean(touched.address && errors.address)}
+                         />
+                      </Grid>
+
+                      <Grid item sm={6} xs={12}>
+                         <TextField
+                             fullWidth
+                             name="phoneNumber1"
+                             label="Номер телефона 1"
+                             variant="outlined"
+                             onBlur={handleBlur}
+                             onChange={handleChange}
+                             value={values.phoneNumber1}
+                             helperText={touched.phoneNumber1 && errors.phoneNumber1}
+                             error={Boolean(touched.phoneNumber1 && errors.phoneNumber1)}
+                         />
+                      </Grid>
+
+                      <Grid item sm={6} xs={12}>
+                         <TextField
+                             fullWidth
+                             name="phoneNumber2"
+                             label="Номер телефона 2"
+                             variant="outlined"
+                             onBlur={handleBlur}
+                             onChange={handleChange}
+                             value={values.phoneNumber2}
+                             helperText={touched.phoneNumber2 && errors.phoneNumber2}
+                             error={Boolean(touched.phoneNumber2 && errors.phoneNumber2)}
                          />
                       </Grid>
 
