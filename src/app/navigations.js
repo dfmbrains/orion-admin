@@ -31,6 +31,12 @@ export const navigations = [
       icon: 'dynamic_feed',
       auth: authRoles.sa, // ONLY SUPER ADMIN(SA) CAN ACCESS
    },
+   {
+      name: 'Отзывы',
+      path: '/reviews',
+      icon: 'reviews',
+      auth: authRoles.sa, // ONLY SUPER ADMIN(SA) CAN ACCESS
+   },
    // {
    //    name: 'Dashboard',
    //    path: '/dashboard/default',
