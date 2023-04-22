@@ -79,9 +79,7 @@ const PartnersForm = () => {
          setLoading(true)
 
          const uploadFileList = async (id) => {
-            for (let i = 0; i < imageList.length; i++) {
-               await uploadFileToFirebase(imageList[i], `${partnersFirebasePath}/${id}/${uuidv4()}`)
-            }
+            await uploadFileToFirebase(imageList[0], `${partnersFirebasePath}/${id}/${uuidv4()}`)
          }
 
          try {
@@ -135,7 +133,7 @@ const PartnersForm = () => {
           <div className="breadcrumb">
              <Breadcrumb routeSegments={[{
                 name: "Список партнеров",
-                path: "/services"
+                path: "/partners"
              }, {name: partnerId ? "Редактирование" : 'Создание'}]}/>
           </div>
 
